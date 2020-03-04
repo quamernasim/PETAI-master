@@ -227,8 +227,9 @@ def train(args):
     for arg in vars(args):
         text = arg + ': ' + str(getattr(args, arg))
         writer.add_text('Parameters/', text)
-    #model_fname = 'data/deeplab_epoch%d.pth'.format(args.exp)
-    model_fname = args.exp
+
+    model_fname = args.model_fname
+    
     # training
     for epoch in range(args.n_epoch):
         # Training Mode:
@@ -412,10 +413,10 @@ def train(args):
                     model_dir = os.path.join(
                         log_dir, f"{args.arch}_model.pkl")
                     #torch.save(model, model_dir)
-
+                    
                     torch.save({'epoch': epoch + 1,
                         'state_dict': model.state_dict(),
-                        'optimizer': optimizer.state_dict(),}, model_fname.format(epoch + 1))
+                        'optimizer': optimizer.state_dict(),}, model_fname.format(args.exp, epoch + 1))
 
 
         else:  # validation is turned off:
@@ -424,9 +425,10 @@ def train(args):
                 model_dir = os.path.join(
                     log_dir, f"{args.arch}_ep{epoch+1}_model.pkl")
                 #torch.save(model, model_dir)
+                        
                 torch.save({'epoch': epoch + 1,
                         'state_dict': model.state_dict(),
-                        'optimizer': optimizer.state_dict(),}, model_fname.format(epoch + 1))
+                        'optimizer': optimizer.state_dict(),}, model_fname.format(args.exp, epoch + 1))
 
     writer.close()
 
@@ -470,12 +472,14 @@ if __name__ == '__main__':
                         help='num of groups for group normalization')
     parser.add_argument('--beta', action='store_true', default=False,
                         help='resnet101 beta')
-    parser.add_argument('--exp', nargs='?', type=str, required=True, default='data/deeplab_epoch_{}.pth',
+    parser.add_argument('--exp', type=str, required=True,
                         help='name of experiment')
     parser.add_argument('--train', action='store_true', default=False,
                         help='training mode')
     parser.add_argument('--test', action='store_true', default=False,
                         help='training mode')
+    parser.add_argument('--model_fname', nargs='?', type=str, default='data/deeplab_{}_epoch_{}.pth',
+                        help='Model name to be saved. enter in form of "...{}_epoch_{}.pth"')
 
     args = parser.parse_args()
     train(args)
