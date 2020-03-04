@@ -227,7 +227,8 @@ def train(args):
     for arg in vars(args):
         text = arg + ': ' + str(getattr(args, arg))
         writer.add_text('Parameters/', text)
-    model_fname = 'data/deeplab_epoch%d.pth'.format(args.exp)
+    #model_fname = 'data/deeplab_epoch%d.pth'.format(args.exp)
+    model_fname = args.exp
     # training
     for epoch in range(args.n_epoch):
         # Training Mode:
@@ -414,7 +415,7 @@ def train(args):
 
                     torch.save({'epoch': epoch + 1,
                         'state_dict': model.state_dict(),
-                        'optimizer': optimizer.state_dict(),}, model_fname % (epoch + 1))
+                        'optimizer': optimizer.state_dict(),}, model_fname.format(epoch + 1))
 
 
         else:  # validation is turned off:
@@ -425,7 +426,7 @@ def train(args):
                 #torch.save(model, model_dir)
                 torch.save({'epoch': epoch + 1,
                         'state_dict': model.state_dict(),
-                        'optimizer': optimizer.state_dict(),}, model_fname % (epoch + 1))
+                        'optimizer': optimizer.state_dict(),}, model_fname.format(epoch + 1))
 
     writer.close()
 
@@ -456,25 +457,25 @@ if __name__ == '__main__':
     parser.add_argument('--class_weights', nargs='?', type=bool, default=False,
                         help='Whether to use class weights to reduce the effect of class imbalance')
     parser.add_argument('--base_lr', type=float, default=0.00025,
-                    help='base learning rate')
+                        help='base learning rate')
     parser.add_argument('--last_mult', type=float, default=1.0,
-                    help='learning rate multiplier for last layers')
+                        help='learning rate multiplier for last layers')
     parser.add_argument('--scratch', action='store_true', default=False,
-                    help='train from scratch')
+                        help='train from scratch')
     parser.add_argument('--freeze_bn', action='store_true', default=False,
-                    help='freeze batch normalization parameters')
+                        help='freeze batch normalization parameters')
     parser.add_argument('--weight_std', action='store_true', default=False,
-                    help='weight standardization')
+                        help='weight standardization')
     parser.add_argument('--groups', type=int, default=None, 
-                    help='num of groups for group normalization')
+                        help='num of groups for group normalization')
     parser.add_argument('--beta', action='store_true', default=False,
-                    help='resnet101 beta')
-    parser.add_argument('--exp', type=str, required=True,
-                    help='name of experiment')
+                        help='resnet101 beta')
+    parser.add_argument('--exp', nargs='?', type=str, required=True, default='data/deeplab_epoch_{}.pth',
+                        help='name of experiment')
     parser.add_argument('--train', action='store_true', default=False,
-                    help='training mode')
+                        help='training mode')
     parser.add_argument('--test', action='store_true', default=False,
-                    help='training mode')
+                        help='training mode')
 
     args = parser.parse_args()
     train(args)
