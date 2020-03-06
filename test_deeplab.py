@@ -234,8 +234,6 @@ if __name__ == '__main__':
                     help='num of groups for group normalization')
     parser.add_argument('--beta', action='store_true', default=False,
                     help='resnet18 beta')
-    parser.add_argument('--exp', type=str, required=True,
-                    help='name of experiment')
     parser.add_argument('--train', action='store_true', default=False,
                     help='training mode')
     parser.add_argument('--test', action='store_true', default=False,
