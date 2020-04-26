@@ -83,12 +83,19 @@ python test.py --model_path 'path/to/trained_model.pkl'
 ### Models:
 
 ResNet9
+
 ResNet7
+
 SeismicNet
+
 SeismicNetBNAdded
+
 SeismicNet4Encoder
+
 SeismicNet4EncoderASPP
+
 SeismicNet3Encoder
+
 SeismicNet3EncoderASPP
 
 In order to be consistent with the results of the paper, we suggest you keep all the test options to their deafault values (such as `test_stride` , `crossline` and `inline` ). Feel free to change the test `split` if you do not want to test on both test splits, and make sure you update `train_patch_size` if it was changed during training. Once the test code is finished, it will print the results in the terminal. You can also view the test results, both images and metrics, in Tensorboard.  
